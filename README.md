@@ -1,11 +1,10 @@
 # Microsoft Teams Online Class Attender
 
-This bot attends the online classes (or meetings) held on Microsoft teams, according to the given timetable.
+This bot attends the online classes according to the given timetable.
 
 
 ## Configure
 
-There are few things you need to configure before running this bot.
 
  - Open Microsoft teams on your browser, login to your account, change the dashboard view to list view . 
  - (https://i.imgur.com/SSDo8c6.png)
