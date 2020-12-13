@@ -7,7 +7,6 @@ This bot attends the online classes according to the given timetable.
 
 
  - Open Microsoft teams on your browser, login to your account, change the dashboard view to list view . 
- - (https://i.imgur.com/SSDo8c6.png)
  - enter your mail id and discord url
  `CREDS  = {'email' : 'myemail@email.com', 'passwd':'''mypassword'''}`
  
