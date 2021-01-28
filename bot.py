@@ -19,7 +19,7 @@ opt.add_argument("start-maximized")
 opt.add_argument("--disable-extensions")
 opt.add_argument("--start-maximized")
 # Pass the argument 1 to allow and 2 to block
-opt.add_experimental_option("prefs", { \
+opt.add_experimental_option("prefs", {
     "profile.default_content_setting_values.media_stream_mic": 1,
     "profile.default_content_setting_values.media_stream_camera": 1,
     "profile.default_content_setting_values.geolocation": 1,
@@ -249,11 +249,14 @@ def sched():
 
 if __name__ == "__main__":
     # joinclass("Maths","15:13","15:15","sunday")
-    op = int(input(("1. Modify Timetable\n2. View Timetable\n3. Start Bot\nEnter option : ")))
+    op = 0
+    while not op == 4:
+        op = int(input("1. Modify Timetable\n2. View Timetable\n3. Start Bot\n4. Exit\nEnter option : "))
 
-    if (op == 1):
-        add_timetable()
-    if (op == 2):
-        view_timetable()
-    if (op == 3):
-        sched()
+        if op == 1:
+            add_timetable()
+        elif op == 2:
+            view_timetable()
+        elif op == 3:
+            sched()
+    exit()
