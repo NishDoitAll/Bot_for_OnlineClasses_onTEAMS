@@ -127,8 +127,8 @@ def view_timetable():
 def join_class(class_name, start_time, end_time):
     global driver
 
-    try_time = int(start_time.split(":")[1]) + 15
-    try_time = start_time.split(":")[0] + ":" + str(try_time)
+    # try_time = int(start_time.split(":")[1]) + 15
+    # try_time = start_time.split(":")[0] + ":" + str(try_time)
 
     time.sleep(5)
 
