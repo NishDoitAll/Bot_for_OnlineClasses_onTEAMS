@@ -10,7 +10,6 @@ import re
 import os.path
 from os import path
 import sqlite3
-import schedule
 from datetime import datetime
 from selenium.webdriver.common.action_chains import ActionChains
 import discord_webhook
@@ -40,14 +39,14 @@ def login():
     global driver
     # login required
     print("logging in")
-    emailField = driver.find_element_by_xpath('//*[@id="i0116"]')
-    emailField.click()
-    emailField.send_keys(CREDS['email'])
+    email_field = driver.find_element_by_xpath('//*[@id="i0116"]')
+    email_field.click()
+    email_field.send_keys(CREDS['email'])
     driver.find_element_by_xpath('//*[@id="idSIButton9"]').click()  # Next button
     time.sleep(5)
-    passwordField = driver.find_element_by_xpath('//*[@id="i0118"]')
-    passwordField.click()
-    passwordField.send_keys(CREDS['passwd'])
+    password_field = driver.find_element_by_xpath('//*[@id="i0118"]')
+    password_field.click()
+    password_field.send_keys(CREDS['passwd'])
     driver.find_element_by_xpath('//*[@id="idSIButton9"]').click()  # Sign in button
     time.sleep(5)
     driver.find_element_by_xpath('//*[@id="idSIButton9"]').click()  # remember login
@@ -89,12 +88,12 @@ def add_timetable():
     while op == 1:
         name = input("Enter class name : ")
         start_time = input("Enter class start time in 24 hour format: (HH:MM) ")
-        while not (validate_input("\d\d:\d\d", start_time)):
+        while not validate_input("\d\d:\d\d", start_time):
             print("Invalid input, try again")
             start_time = input("Enter class start time in 24 hour format: (HH:MM) ")
 
         end_time = input("Enter class end time in 24 hour format: (HH:MM) ")
-        while not (validate_input("\d\d:\d\d", end_time)):
+        while not validate_input("\d\d:\d\d", end_time):
             print("Invalid input, try again")
             end_time = input("Enter class end time in 24 hour format: (HH:MM) ")
 
