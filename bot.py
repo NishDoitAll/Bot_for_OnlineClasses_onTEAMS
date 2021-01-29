@@ -2,7 +2,7 @@ from typing import Any
 
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 import time
@@ -84,8 +84,8 @@ def validate_day(inp):
 def add_timetable():
     if not path.exists("timetable.db"):
         createDB()
-    op = int(input("1. Add class\n2. Done adding\nEnter option : "))
-    while op == 1:
+    op_tt = int(input("1. Add class\n2. Done adding\nEnter option : "))
+    while op_tt == 1:
         name = input("Enter class name : ")
         start_time = input("Enter class start time in 24 hour format: (HH:MM) ")
         while not validate_input("\d\d:\d\d", start_time):
@@ -113,7 +113,7 @@ def add_timetable():
 
         print("Class added to database\n")
 
-        op = int(input("1. Add class\n2. Done adding\nEnter option : "))
+        op_tt = int(input("1. Add class\n2. Done adding\nEnter option : "))
 
 
 def view_timetable():
@@ -143,14 +143,14 @@ def joinclass(class_name, start_time, end_time):
     time.sleep(4)
 
     try:
-        joinbtn = driver.find_element_by_class_name("ts-calling-join-button")
-        joinbtn.click()
+        join_button = driver.find_element_by_class_name("ts-calling-join-button")
+        join_button.click()
 
-    except:
+    except any:
         # join button not found
         # refresh every minute until found
         k = 1
-        while (k <= 15):
+        while k <= 15:
             print("Join button not found, trying again")
             time.sleep(60)
             driver.refresh()
@@ -162,18 +162,20 @@ def joinclass(class_name, start_time, end_time):
 
     time.sleep(4)
     webcam = driver.find_element_by_xpath(
-        '//*[@id="page-content-wrapper"]/div[1]/div/calling-pre-join-screen/div/div/div[2]/div[1]/div[2]/div/div/section/div[2]/toggle-button[1]/div/button/span[1]')
-    if (webcam.get_attribute('title') == 'Turn camera off'):
+        '//*[@id="page-content-wrapper"]/div[1]/div/calling-pre-join-screen/div,'
+        '/div/div[2]/div[1]/div[2]/div/div/section/div[2]/toggle-button[1]/div/button/span[1]')
+    if webcam.get_attribute('title') == 'Turn camera off':
         webcam.click()
     time.sleep(1)
 
     microphone = driver.find_element_by_xpath('//*[@id="preJoinAudioButton"]/div/button/span[1]')
-    if (microphone.get_attribute('title') == 'Mute microphone'):
+    if microphone.get_attribute('title') == 'Mute microphone':
         microphone.click()
 
     time.sleep(1)
     joinnowbtn = driver.find_element_by_xpath(
-        '//*[@id="page-content-wrapper"]/div[1]/div/calling-pre-join-screen/div/div/div[2]/div[1]/div[2]/div/div/section/div[1]/div/div/button')
+        '//*[@id="page-content-wrapper"]/div[1]/div/calling-pre-join-screen/div/div/div[2],'
+        '/div[1]/div[2]/div/div/section/div[1]/div/div/button')
     joinnowbtn.click()
 
     discord_webhook.send_msg(class_name=class_name, status="joined", start_time=start_time, end_time=end_time)
@@ -203,7 +205,7 @@ def start_browser():
 
     WebDriverWait(driver, 10000).until(EC.visibility_of_element_located((By.TAG_NAME, 'body')))
 
-    if ("login.microsoftonline.com" in driver.current_url):
+    if "login.microsoftonline.com" in driver.current_url:
         login()
 
 
@@ -250,14 +252,14 @@ def sched():
 
 if __name__ == "__main__":
     # joinclass("Maths","15:13","15:15","sunday")
-    op = 0
-    while not op == 4:
+    op_main = 0
+    while not op_main == 4:
         op = int(input("1. Modify Timetable\n2. View Timetable\n3. Start Bot\n4. Exit\nEnter option : "))
 
-        if op == 1:
+        if op_main == 1:
             add_timetable()
-        elif op == 2:
+        elif op_main == 2:
             view_timetable()
-        elif op == 3:
+        elif op_main == 3:
             sched()
     exit(0)
