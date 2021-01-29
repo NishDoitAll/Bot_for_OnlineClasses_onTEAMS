@@ -1,3 +1,5 @@
+from typing import Any
+
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -81,10 +83,10 @@ def validate_day(inp):
 
 
 def add_timetable():
-    if (not (path.exists("timetable.db"))):
+    if not path.exists("timetable.db"):
         createDB()
     op = int(input("1. Add class\n2. Done adding\nEnter option : "))
-    while (op == 1):
+    while op == 1:
         name = input("Enter class name : ")
         start_time = input("Enter class start time in 24 hour format: (HH:MM) ")
         while not (validate_input("\d\d:\d\d", start_time)):
@@ -219,22 +221,22 @@ def sched():
         if day.lower() == "monday":
             schedule.every().monday.at(start_time).do(joinclass, name, start_time, end_time)
             print("Scheduled class '%s' on %s at %s" % (name, day, start_time))
-        if day.lower() == "tuesday":
+        elif day.lower() == "tuesday":
             schedule.every().tuesday.at(start_time).do(joinclass, name, start_time, end_time)
             print("Scheduled class '%s' on %s at %s" % (name, day, start_time))
-        if day.lower() == "wednesday":
+        elif day.lower() == "wednesday":
             schedule.every().wednesday.at(start_time).do(joinclass, name, start_time, end_time)
             print("Scheduled class '%s' on %s at %s" % (name, day, start_time))
-        if day.lower() == "thursday":
+        elif day.lower() == "thursday":
             schedule.every().thursday.at(start_time).do(joinclass, name, start_time, end_time)
             print("Scheduled class '%s' on %s at %s" % (name, day, start_time))
-        if day.lower() == "friday":
+        elif day.lower() == "friday":
             schedule.every().friday.at(start_time).do(joinclass, name, start_time, end_time)
             print("Scheduled class '%s' on %s at %s" % (name, day, start_time))
-        if day.lower() == "saturday":
+        elif day.lower() == "saturday":
             schedule.every().saturday.at(start_time).do(joinclass, name, start_time, end_time)
             print("Scheduled class '%s' on %s at %s" % (name, day, start_time))
-        if day.lower() == "sunday":
+        elif day.lower() == "sunday":
             schedule.every().sunday.at(start_time).do(joinclass, name, start_time, end_time)
             print("Scheduled class '%s' on %s at %s" % (name, day, start_time))
 
@@ -259,4 +261,4 @@ if __name__ == "__main__":
             view_timetable()
         elif op == 3:
             sched()
-    exit()
+    exit(0)
