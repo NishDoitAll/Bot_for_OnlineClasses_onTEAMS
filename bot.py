@@ -32,7 +32,7 @@ driver = None
 URL = "https://teams.microsoft.com"
 
 # put your teams credentials here
-CREDS = {'email': '#enter your mail', 'passwd': '#your password'}
+credentials = {'email': '#enter your mail', 'passwd': '#your password'}
 
 
 def login():
@@ -41,12 +41,12 @@ def login():
     print("logging in")
     email_field = driver.find_element_by_xpath('//*[@id="i0116"]')
     email_field.click()
-    email_field.send_keys(CREDS['email'])
+    email_field.send_keys(credentials['email'])
     driver.find_element_by_xpath('//*[@id="idSIButton9"]').click()  # Next button
     time.sleep(5)
     password_field = driver.find_element_by_xpath('//*[@id="i0118"]')
     password_field.click()
-    password_field.send_keys(CREDS['passwd'])
+    password_field.send_keys(credentials['passwd'])
     driver.find_element_by_xpath('//*[@id="idSIButton9"]').click()  # Sign in button
     time.sleep(5)
     driver.find_element_by_xpath('//*[@id="idSIButton9"]').click()  # remember login
@@ -88,12 +88,12 @@ def add_timetable():
     while op_tt == 1:
         name = input("Enter class name : ")
         start_time = input("Enter class start time in 24 hour format: (HH:MM) ")
-        while not validate_input("\d\d:\d\d", start_time):
+        while not validate_input(r"\d\d:\d\d", start_time):
             print("Invalid input, try again")
             start_time = input("Enter class start time in 24 hour format: (HH:MM) ")
 
         end_time = input("Enter class end time in 24 hour format: (HH:MM) ")
-        while not validate_input("\d\d:\d\d", end_time):
+        while not validate_input(r"\d\d:\d\d", end_time):
             print("Invalid input, try again")
             end_time = input("Enter class end time in 24 hour format: (HH:MM) ")
 
@@ -124,7 +124,7 @@ def view_timetable():
     conn.close()
 
 
-def joinclass(class_name, start_time, end_time):
+def join_class(class_name, start_time, end_time):
     global driver
 
     try_time = int(start_time.split(":")[1]) + 15
@@ -154,8 +154,8 @@ def joinclass(class_name, start_time, end_time):
             print("Join button not found, trying again")
             time.sleep(60)
             driver.refresh()
-            joinclass(class_name, start_time, end_time)
-            # schedule.every(1).minutes.do(joinclass,class_name,start_time,end_time)
+            join_class(class_name, start_time, end_time)
+            # schedule.every(1).minutes.do(join_class,class_name,start_time,end_time)
             k += 1
         print("Seems like there is no class today.")
         discord_webhook.send_msg(class_name=class_name, status="noclass", start_time=start_time, end_time=end_time)
@@ -173,10 +173,10 @@ def joinclass(class_name, start_time, end_time):
         microphone.click()
 
     time.sleep(1)
-    joinnowbtn = driver.find_element_by_xpath(
+    join_now_button = driver.find_element_by_xpath(
         '//*[@id="page-content-wrapper"]/div[1]/div/calling-pre-join-screen/div/div/div[2],'
         '/div[1]/div[2]/div/div/section/div[1]/div/div/button')
-    joinnowbtn.click()
+    join_now_button.click()
 
     discord_webhook.send_msg(class_name=class_name, status="joined", start_time=start_time, end_time=end_time)
 
@@ -209,7 +209,7 @@ def start_browser():
         login()
 
 
-def sched():
+def scheduled():
     conn = sqlite3.connect('timetable.db')
     c = conn.cursor()
     for row in c.execute('SELECT * FROM timetable'):
@@ -220,25 +220,25 @@ def sched():
         day = row[3]
 
         if day.lower() == "monday":
-            schedule.every().monday.at(start_time).do(joinclass, name, start_time, end_time)
+            schedule.every().monday.at(start_time).do(join_class, name, start_time, end_time)
             print("Scheduled class '%s' on %s at %s" % (name, day, start_time))
         elif day.lower() == "tuesday":
-            schedule.every().tuesday.at(start_time).do(joinclass, name, start_time, end_time)
+            schedule.every().tuesday.at(start_time).do(join_class, name, start_time, end_time)
             print("Scheduled class '%s' on %s at %s" % (name, day, start_time))
         elif day.lower() == "wednesday":
-            schedule.every().wednesday.at(start_time).do(joinclass, name, start_time, end_time)
+            schedule.every().wednesday.at(start_time).do(join_class, name, start_time, end_time)
             print("Scheduled class '%s' on %s at %s" % (name, day, start_time))
         elif day.lower() == "thursday":
-            schedule.every().thursday.at(start_time).do(joinclass, name, start_time, end_time)
+            schedule.every().thursday.at(start_time).do(join_class, name, start_time, end_time)
             print("Scheduled class '%s' on %s at %s" % (name, day, start_time))
         elif day.lower() == "friday":
-            schedule.every().friday.at(start_time).do(joinclass, name, start_time, end_time)
+            schedule.every().friday.at(start_time).do(join_class, name, start_time, end_time)
             print("Scheduled class '%s' on %s at %s" % (name, day, start_time))
         elif day.lower() == "saturday":
-            schedule.every().saturday.at(start_time).do(joinclass, name, start_time, end_time)
+            schedule.every().saturday.at(start_time).do(join_class, name, start_time, end_time)
             print("Scheduled class '%s' on %s at %s" % (name, day, start_time))
         elif day.lower() == "sunday":
-            schedule.every().sunday.at(start_time).do(joinclass, name, start_time, end_time)
+            schedule.every().sunday.at(start_time).do(join_class, name, start_time, end_time)
             print("Scheduled class '%s' on %s at %s" % (name, day, start_time))
 
     # Start browser
@@ -251,15 +251,15 @@ def sched():
 
 
 if __name__ == "__main__":
-    # joinclass("Maths","15:13","15:15","sunday")
+    # join_class("Maths","15:13","15:15","sunday")
     op_main = 0
     while not op_main == 4:
-        op = int(input("1. Modify Timetable\n2. View Timetable\n3. Start Bot\n4. Exit\nEnter option : "))
+        op_main = int(input("1. Modify Timetable\n2. View Timetable\n3. Start Bot\n4. Exit\nEnter option : "))
 
         if op_main == 1:
             add_timetable()
         elif op_main == 2:
             view_timetable()
         elif op_main == 3:
-            sched()
+            scheduled()
     exit(0)
